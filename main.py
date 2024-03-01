@@ -35,6 +35,24 @@ def new_order():
     order = SingleOrder()
 
 
+def get_sandwich():
+    if not get_yes_no_answer("Would you like a sandwich?>"):
+        return
+
+    # filter the menu for just sandwich choices
+    filtered_items = filter(lambda item: item.category == 'Sandwich', menu)
+    available_choices = list(filtered_items)
+
+    # create prompt
+    prompt = "Which sandwich would you like to order: ("
+    for available_choice in available_choices:
+        prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
+    prompt = prompt.removesuffix(', ')
+    prompt += ") ?>"
+
+    choice = input(prompt)
+
+
 def get_order():
     new_order()
 
@@ -74,12 +92,6 @@ def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:
                 return count
         except ValueError:
             print(f'Please enter a value between {min_value} and {max_value}')
-
-
-def get_sandwich():
-    filtered_items = filter(lambda item: item.category == 'Sandwich', menu)
-    display_items = list(filtered_items)
-    print(f'{display_items=}')
 
 
 if __name__ == '__main__':
