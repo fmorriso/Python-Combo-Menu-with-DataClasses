@@ -50,8 +50,23 @@ def get_sandwich():
     prompt = prompt.removesuffix(', ')
     prompt += ") ?>"
 
-    choice = input(prompt)
+    while True:
+        choice = input(prompt)
+        if choice is None or len(choice) == 0:
+            choice = "unknown"
+        abbrev = choice[:1].lower()
 
+        selection = None
+        for available_choice in available_choices:
+            if available_choice.name[:1].lower() == abbrev:
+                selection = available_choice
+                break
+
+        if selection is None:
+            print(f'{abbrev} is not a valid choice')
+        else:
+            print(f'{selection.name} is a great choice')
+            break
 
 def get_order():
     new_order()
