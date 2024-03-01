@@ -4,6 +4,14 @@ from single_order import *
 order = SingleOrder()
 
 
+def new_order():
+    global order
+    order = SingleOrder()
+
+
+def get_order():
+    new_order()
+
 def get_python_version() -> str:
     return f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}'
 
@@ -43,4 +51,15 @@ def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:
 
 if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
-    print(f'{order=}')
+
+    order = SingleOrder()
+    order.order_number = SingleOrder.get_next_order_number()
+    order.sandwich_type = 'Chicken'
+    order.sandwich_cost = 5.25
+    print(f'Order: {order}')
+    order.display_order()
+
+    order = SingleOrder()
+    order.order_number = SingleOrder.get_next_order_number()
+    print(f'Order: {order}')
+
