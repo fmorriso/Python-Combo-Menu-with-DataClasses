@@ -68,6 +68,12 @@ def get_sandwich():
             print(f'{selection.name} is a great choice')
             break
 
+    order.sandwich_type = selection.name
+    order.sandwich_cost = selection.price
+
+    order.total_cost += selection.price
+
+
 def get_order():
     new_order()
 
@@ -113,8 +119,10 @@ if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
 
     build_menu()
-    print(f'{menu=}')
+    # print(f'{menu=}')
 
     order = SingleOrder()
     order.order_number = SingleOrder.get_next_order_number()
+
     get_sandwich()
+    print(order)
