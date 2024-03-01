@@ -1,6 +1,9 @@
 import sys
+
+from menu_item import MenuItem
 from single_order import *
 
+menu : list[MenuItem] = []
 order = SingleOrder()
 
 
@@ -51,6 +54,8 @@ def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:
 
 if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
+
+
 
     order = SingleOrder()
     order.order_number = SingleOrder.get_next_order_number()
