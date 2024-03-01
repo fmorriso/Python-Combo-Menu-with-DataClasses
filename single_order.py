@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional
 
+# NOTE: we make every attribute optional so we can perform the
+#       python equivalent of java's default constructor:
+#       order = SingleOrder()
 
 @dataclass
 class SingleOrder:
