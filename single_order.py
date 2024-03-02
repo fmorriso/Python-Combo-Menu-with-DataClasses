@@ -13,6 +13,7 @@ from menu_item import MenuItem
 class SingleOrder:
     KETCHUP_PACKETS_PRICE_EACH: ClassVar[float] = 0.25
     COMBO_DISCOUNT_AMOUNT: ClassVar[float] = 1.0
+    menu: ClassVar[list[MenuItem]] = []
 
     next_order_number: ClassVar[int] = 100
 
@@ -38,16 +39,38 @@ class SingleOrder:
         self.order_number = SingleOrder.get_next_order_number()
 
     @staticmethod
+    def build_menu():
+        """build menu that is the same for all orders"""
+        category = 'Sandwich'
+        for selection in (['Chicken', 5.25], ['Beef', 6.25], ['Tofu', 5.75]):
+            menu_item = MenuItem(category, selection[0], selection[1])
+            SingleOrder.menu.append(menu_item)
+
+        category = 'Beverage'
+        for selection in (['Small', 1.0], ['Medium', 1.5], ['Large', 2.0]):
+            menu_item = MenuItem(category, selection[0], selection[1])
+            SingleOrder.menu.append(menu_item)
+
+        category = 'Fries'
+        for selection in (['Small', 1.0], ['Medium', 1.5], ['Large', 2.0]):
+            menu_item = MenuItem(category, selection[0], selection[1])
+            SingleOrder.menu.append(menu_item)
+
+        category = 'Condiments'
+        menu_item = MenuItem(category, 'Ketchup packets', 0.25, 0)
+        SingleOrder.menu.append(menu_item)
+
+    @staticmethod
     def get_next_order_number() -> int:
         SingleOrder.next_order_number += 1
         return SingleOrder.next_order_number
 
-    def get_sandwich(self, menu: list[MenuItem]) -> None:
+    def get_sandwich(self) -> None:
         if not SingleOrder.get_yes_no_answer("Would you like a sandwich?>"):
             return
 
         # filter the menu for just sandwich choices
-        filtered_items = filter(lambda item: item.category == 'Sandwich', menu)
+        filtered_items = filter(lambda item: item.category == 'Sandwich', SingleOrder.menu)
         available_choices = list(filtered_items)
 
         # create prompt
@@ -80,12 +103,12 @@ class SingleOrder:
 
         self.total_cost += selection.price
 
-    def get_beverage(self, menu: list[MenuItem]) -> None:
+    def get_beverage(self) -> None:
         if not SingleOrder.get_yes_no_answer("Would you like a beverage?>"):
             return
 
         # filter the menu for just beverage choices
-        filtered_items = filter(lambda item: item.category == 'Beverage', menu)
+        filtered_items = filter(lambda item: item.category == 'Beverage', SingleOrder.menu)
         available_choices = list(filtered_items)
 
         # create prompt
@@ -118,12 +141,12 @@ class SingleOrder:
 
         self.total_cost += selection.price
 
-    def get_fries(self, menu: list[MenuItem]) -> None:
+    def get_fries(self) -> None:
         if not SingleOrder.get_yes_no_answer("Would you like fries?>"):
             return
 
         # filter the menu for just beverage choices
-        filtered_items = filter(lambda item: item.category == 'Fries', menu)
+        filtered_items = filter(lambda item: item.category == 'Fries', SingleOrder.menu)
         available_choices = list(filtered_items)
 
         # create prompt
@@ -195,7 +218,6 @@ class SingleOrder:
 
         print(f'{"Total:":29}${self.total_cost:5.2f}')
 
-
     @staticmethod
     def get_yes_no_answer(question: str) -> bool:
         while True:
@@ -213,7 +235,6 @@ class SingleOrder:
 
                     case _:
                         print("please respond with y, n, Yes, yes, No or no")
-
 
     @staticmethod
     def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:
