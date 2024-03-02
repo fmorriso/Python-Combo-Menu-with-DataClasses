@@ -138,6 +138,13 @@ def display_order():
         output += f'{"None":10}'
     print(output)
 
+    output = f'\t{"Fries:":15}'
+    if order.fries_cost > 0:
+        output += f'{order.fries_size:10}${order.fries_cost:5.2f}'
+    else:
+        output += f'{"None":10}'
+    print(output)
+
     print(f'{"Total:":29}${order.total_cost:5.2f}')
 
 
@@ -145,6 +152,7 @@ def get_order():
     new_order()
     get_sandwich()
     get_beverage()
+    get_fries()
     display_order()
 
 
