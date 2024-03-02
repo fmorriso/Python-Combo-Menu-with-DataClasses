@@ -36,45 +36,6 @@ def new_order() -> SingleOrder:
     return new_order
 
 
-def get_sandwich(order: SingleOrder) -> None:
-    if not get_yes_no_answer("Would you like a sandwich?>"):
-        return
-
-    # filter the menu for just sandwich choices
-    filtered_items = filter(lambda item: item.category == 'Sandwich', menu)
-    available_choices = list(filtered_items)
-
-    # create prompt
-    prompt = "Which sandwich would you like to order: ("
-    for available_choice in available_choices:
-        prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
-    prompt = prompt.removesuffix(', ')
-    prompt += ") ?>"
-
-    while True:
-        choice = input(prompt)
-        if choice is None or len(choice) == 0:
-            choice = "unknown"
-        abbrev = choice[:1].lower()
-
-        selection = None
-        for available_choice in available_choices:
-            if available_choice.name[:1].lower() == abbrev:
-                selection = available_choice
-                break
-
-        if selection is None:
-            print(f'{abbrev} is not a valid choice')
-        else:
-            print(f'{selection.name} is a great choice')
-            break
-
-    order.sandwich_type = selection.name
-    order.sandwich_cost = selection.price
-
-    order.total_cost += selection.price
-
-
 def get_beverage(order: SingleOrder) -> None:
     if not get_yes_no_answer("Would you like a beverage?>"):
         return
@@ -164,7 +125,7 @@ def get_fries(order: SingleOrder) -> None:
 
 def get_order():
     order = new_order()
-    get_sandwich(order)
+    order.get_sandwich(menu)
     get_beverage(order)
     get_fries(order)
     order.display()

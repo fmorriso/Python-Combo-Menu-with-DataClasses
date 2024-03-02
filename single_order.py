@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional
 
+from menu_item import MenuItem
+
 
 # NOTE: we make every attribute optional so we can perform the
 #       python equivalent of java's default constructor:
@@ -40,6 +42,44 @@ class SingleOrder:
         SingleOrder.next_order_number += 1
         return SingleOrder.next_order_number
 
+    def get_sandwich(self, menu: list[MenuItem]) -> None:
+        if not self.get_yes_no_answer("Would you like a sandwich?>"):
+            return
+
+        # filter the menu for just sandwich choices
+        filtered_items = filter(lambda item: item.category == 'Sandwich', menu)
+        available_choices = list(filtered_items)
+
+        # create prompt
+        prompt = "Which sandwich would you like to order: ("
+        for available_choice in available_choices:
+            prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
+        prompt = prompt.removesuffix(', ')
+        prompt += ") ?>"
+
+        while True:
+            choice = input(prompt)
+            if choice is None or len(choice) == 0:
+                choice = "unknown"
+            abbrev = choice[:1].lower()
+
+            selection = None
+            for available_choice in available_choices:
+                if available_choice.name[:1].lower() == abbrev:
+                    selection = available_choice
+                    break
+
+            if selection is None:
+                print(f'{abbrev} is not a valid choice')
+            else:
+                print(f'{selection.name} is a great choice')
+                break
+
+        self.sandwich_type = selection.name
+        self.sandwich_cost = selection.price
+
+        self.total_cost += selection.price
+
     def display(self):
         if self.total_cost == 0:
             print('There are no selections in this order yet.')
@@ -70,3 +110,37 @@ class SingleOrder:
 
         print(f'{"Total:":29}${self.total_cost:5.2f}')
 
+
+    @staticmethod
+    def get_yes_no_answer(question: str) -> bool:
+        while True:
+            answer = input(question)
+            if answer is None or len(answer) == 0:
+                print("please respond with y, n, Yes, yes, No or no")
+            else:
+                answer = answer.lower()[:1]
+                match answer:
+                    case 'y':
+                        return True
+
+                    case 'n':
+                        return False
+
+                    case _:
+                        print("please respond with y, n, Yes, yes, No or no")
+
+
+    @staticmethod
+    def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:
+        """Prompt for a number between min_value and max_value"""
+        question = f'{question} (between {min_value} and {max_value})?>'
+        count: int = min_value - 1
+        while count < min_value or count > max_value:
+            try:
+                count = int(input(question))
+                if count < min_value or count > max_value:
+                    print(f'Please enter a number between {min_value} and {max_value}.')
+                else:
+                    return count
+            except ValueError:
+                print(f'Please enter a value between {min_value} and {max_value}')
