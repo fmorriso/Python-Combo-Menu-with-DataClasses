@@ -4,7 +4,6 @@ from menu_item import MenuItem
 from single_order import SingleOrder
 
 menu: list[MenuItem] = []
-order = SingleOrder()
 
 
 def build_menu():
@@ -31,14 +30,13 @@ def build_menu():
     menu.append(menu_item)
 
 
-def new_order():
-    global order
+def new_order() -> SingleOrder:
+    new_order = SingleOrder()
+    # print(f'Order: {new_order}')
+    return new_order
 
-    order = SingleOrder()
-    print(f'Order: {order}')
 
-
-def get_sandwich():
+def get_sandwich(order: SingleOrder) -> None:
     if not get_yes_no_answer("Would you like a sandwich?>"):
         return
 
@@ -77,7 +75,7 @@ def get_sandwich():
     order.total_cost += selection.price
 
 
-def get_beverage():
+def get_beverage(order: SingleOrder) -> None:
     if not get_yes_no_answer("Would you like a beverage?>"):
         return
 
@@ -116,12 +114,12 @@ def get_beverage():
     order.total_cost += selection.price
 
 
-def get_fries():
+def get_fries(order: SingleOrder) -> None:
     if not get_yes_no_answer("Would you like fries?>"):
         return
 
 
-def display_order():
+def display_order(order: SingleOrder) -> None:
     print(f'Order number {order.order_number}')
 
     output = f'\t{"Sandwich:":15}'
@@ -149,11 +147,11 @@ def display_order():
 
 
 def get_order():
-    new_order()
-    get_sandwich()
-    get_beverage()
-    get_fries()
-    display_order()
+    order = new_order()
+    get_sandwich(order)
+    get_beverage(order)
+    get_fries(order)
+    display_order(order)
 
 
 def get_python_version() -> str:
