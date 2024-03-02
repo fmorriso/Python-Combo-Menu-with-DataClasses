@@ -8,6 +8,7 @@ order = SingleOrder()
 
 
 def build_menu():
+    """build the menu of selections and their prices"""
     global menu
 
     category = 'Sandwich'
@@ -32,7 +33,9 @@ def build_menu():
 
 def new_order():
     global order
+
     order = SingleOrder()
+    print(f'Order: {order}')
 
 
 def get_sandwich():
@@ -73,9 +76,19 @@ def get_sandwich():
 
     order.total_cost += selection.price
 
+def get_beverage():
+    if not get_yes_no_answer("Would you like a beverage?>"):
+        return
+
+
+def display_order():
+    pass
+
 
 def get_order():
     new_order()
+    get_sandwich()
+    display_order()
 
 
 def get_python_version() -> str:
@@ -120,9 +133,6 @@ if __name__ == '__main__':
 
     build_menu()
     # print(f'{menu=}')
+    get_order()
 
-    order = SingleOrder()
-    order.order_number = SingleOrder.get_next_order_number()
 
-    get_sandwich()
-    print(order)

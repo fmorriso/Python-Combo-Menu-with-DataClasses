@@ -31,6 +31,10 @@ class SingleOrder:
 
     combbo_discount_applied: Optional[bool] = False
 
+    def __init__(self):
+        """augment the built-in DataClass constructor with some special stuff"""
+        self.order_number = SingleOrder.get_next_order_number()
+
     @staticmethod
     def get_next_order_number() -> int:
         SingleOrder.next_order_number += 1
