@@ -20,4 +20,5 @@ if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
 
     # TODO: surround get_order() with a loop that allows multiple orders to be taken and remembered.
+    # one possibility is a Customer class with a list of orders of type SingleOrder
     current_order = get_order()
