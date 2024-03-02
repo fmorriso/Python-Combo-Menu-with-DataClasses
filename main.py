@@ -1,7 +1,7 @@
 import sys
 
 from menu_item import MenuItem
-from single_order import *
+from single_order import SingleOrder
 
 menu: list[MenuItem] = []
 order = SingleOrder()
