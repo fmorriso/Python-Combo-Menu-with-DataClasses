@@ -43,7 +43,7 @@ class SingleOrder:
         return SingleOrder.next_order_number
 
     def get_sandwich(self, menu: list[MenuItem]) -> None:
-        if not self.get_yes_no_answer("Would you like a sandwich?>"):
+        if not SingleOrder.get_yes_no_answer("Would you like a sandwich?>"):
             return
 
         # filter the menu for just sandwich choices
@@ -77,6 +77,44 @@ class SingleOrder:
 
         self.sandwich_type = selection.name
         self.sandwich_cost = selection.price
+
+        self.total_cost += selection.price
+
+    def get_beverage(self, menu: list[MenuItem]) -> None:
+        if not SingleOrder.get_yes_no_answer("Would you like a beverage?>"):
+            return
+
+        # filter the menu for just beverage choices
+        filtered_items = filter(lambda item: item.category == 'Beverage', menu)
+        available_choices = list(filtered_items)
+
+        # create prompt
+        prompt = "What size beverage would you like to order: ("
+        for available_choice in available_choices:
+            prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
+        prompt = prompt.removesuffix(', ')
+        prompt += ") ?>"
+
+        while True:
+            choice = input(prompt)
+            if choice is None or len(choice) == 0:
+                choice = "unknown"
+            abbrev = choice[:1].lower()
+
+            selection = None
+            for available_choice in available_choices:
+                if available_choice.name[:1].lower() == abbrev:
+                    selection = available_choice
+                    break
+
+            if selection is None:
+                print(f'{abbrev} is not a valid choice')
+            else:
+                print(f'{selection.name} is a great choice')
+                break
+
+        self.beverage_size = selection.name
+        self.beverage_cost = selection.price
 
         self.total_cost += selection.price
 
