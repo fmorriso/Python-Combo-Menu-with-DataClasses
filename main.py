@@ -18,6 +18,6 @@ def get_python_version() -> str:
 
 if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
-    
+
     # TODO: surround get_order() with a loop that allows multiple orders to be taken and remembered.
     current_order = get_order()
