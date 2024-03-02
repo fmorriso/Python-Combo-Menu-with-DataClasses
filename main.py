@@ -163,6 +163,10 @@ def get_fries(order: SingleOrder) -> None:
 
 
 def display_order(order: SingleOrder) -> None:
+    if order is None or order.total_cost == 0:
+        print('There are no selections in this order yet.')
+        return
+
     print(f'Order number {order.order_number}')
 
     output = f'\t{"Sandwich:":15}'
