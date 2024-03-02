@@ -85,9 +85,56 @@ def get_beverage():
     filtered_items = filter(lambda item: item.category == 'Beverage', menu)
     available_choices = list(filtered_items)
 
+    # create prompt
+    prompt = "What size beverage would you like to order: ("
+    for available_choice in available_choices:
+        prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
+    prompt = prompt.removesuffix(', ')
+    prompt += ") ?>"
+
+    while True:
+        choice = input(prompt)
+        if choice is None or len(choice) == 0:
+            choice = "unknown"
+        abbrev = choice[:1].lower()
+
+        selection = None
+        for available_choice in available_choices:
+            if available_choice.name[:1].lower() == abbrev:
+                selection = available_choice
+                break
+
+        if selection is None:
+            print(f'{abbrev} is not a valid choice')
+        else:
+            print(f'{selection.name} is a great choice')
+            break
+
+    order.beverage_size = selection.name
+    order.beverage_cost = selection.price
+
+    order.total_cost += selection.price
 
 def display_order():
-    pass
+    print(f'Order number {order.order_number}')
+
+    output = f'\t{"Sandwich:":15}'
+    if order.sandwich_cost > 0:
+        output += f'{order.sandwich_type:10}${order.sandwich_cost:5.2f}'
+    else:
+        output += f'{"None":10}'
+    print(output)
+
+    output = f'\t{"Beverage:":15}'
+    if order.beverage_cost > 0:
+        output += f'{order.beverage_size:10}${order.beverage_cost:5.2f}'
+    else:
+        output += f'{"None":10}'
+    print(output)
+
+    print(f'{"Total:":29}${order.total_cost:5.2f}')
+
+
 
 
 def get_order():
