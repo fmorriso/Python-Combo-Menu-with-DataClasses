@@ -115,6 +115,12 @@ def get_beverage():
 
     order.total_cost += selection.price
 
+
+def get_fries():
+    if not get_yes_no_answer("Would you like fries?>"):
+        return
+
+
 def display_order():
     print(f'Order number {order.order_number}')
 
@@ -133,8 +139,6 @@ def display_order():
     print(output)
 
     print(f'{"Total:":29}${order.total_cost:5.2f}')
-
-
 
 
 def get_order():
