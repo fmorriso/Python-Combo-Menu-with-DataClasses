@@ -37,6 +37,8 @@ class SingleOrder:
     def __init__(self):
         """augment the built-in DataClass constructor with some special stuff"""
         self.order_number = SingleOrder.get_next_order_number()
+        if len(SingleOrder.menu) == 0:
+            SingleOrder.build_menu()
 
     @staticmethod
     def build_menu():
@@ -70,15 +72,10 @@ class SingleOrder:
             return
 
         # filter the menu for just sandwich choices
-        filtered_items = filter(lambda item: item.category == 'Sandwich', SingleOrder.menu)
-        available_choices = list(filtered_items)
+        available_choices: list[MenuItem] = self.get_menu_choices_for_category('Sandwich')
 
-        # create prompt
-        prompt = "Which sandwich would you like to order: ("
-        for available_choice in available_choices:
-            prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
-        prompt = prompt.removesuffix(', ')
-        prompt += ") ?>"
+        # create prompt with choices and prices
+        prompt = self.get_prompt_for_category("Which sandwich would you like to order: (", available_choices)
 
         while True:
             choice = input(prompt)
@@ -108,15 +105,10 @@ class SingleOrder:
             return
 
         # filter the menu for just beverage choices
-        filtered_items = filter(lambda item: item.category == 'Beverage', SingleOrder.menu)
-        available_choices = list(filtered_items)
+        available_choices: list[MenuItem] = self.get_menu_choices_for_category('Beverage')
 
-        # create prompt
-        prompt = "What size beverage would you like to order: ("
-        for available_choice in available_choices:
-            prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
-        prompt = prompt.removesuffix(', ')
-        prompt += ") ?>"
+        # create prompt with choices and prices
+        prompt = self.get_prompt_for_category("What size beverage would you like to order: (", available_choices)
 
         while True:
             choice = input(prompt)
@@ -145,16 +137,11 @@ class SingleOrder:
         if not SingleOrder.get_yes_no_answer("Would you like fries?>"):
             return
 
-        # filter the menu for just beverage choices
-        filtered_items = filter(lambda item: item.category == 'Fries', SingleOrder.menu)
-        available_choices = list(filtered_items)
+        # filter the menu for just french fries choices
+        available_choices = self.get_menu_choices_for_category('Fries')
 
-        # create prompt
-        prompt = "What size french fries would you like to order: ("
-        for available_choice in available_choices:
-            prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
-        prompt = prompt.removesuffix(', ')
-        prompt += ") ?>"
+        # create the prompt with choices and prices
+        prompt = self.get_prompt_for_category("What size french fries would you like to order: (", available_choices)
 
         # print(f'DEBUG: {prompt=}')
         while True:
@@ -187,6 +174,20 @@ class SingleOrder:
         self.fries_cost = selection.price
 
         self.total_cost += selection.price
+
+    def get_menu_choices_for_category(self, category: str) -> list[MenuItem]:
+        # filter the menu for just the specified category choices
+        filtered_items = filter(lambda item: item.category == category, SingleOrder.menu)
+        available_choices = list(filtered_items)
+        return available_choices
+
+    def get_prompt_for_category(self, leadin: str, available_choices: list[MenuItem]) -> str:
+        prompt = leadin
+        for available_choice in available_choices:
+            prompt += f'{available_choice.name}: ${available_choice.price:.2f}, '
+        prompt = prompt.removesuffix(', ')
+        prompt += ") ?>"
+        return prompt
 
     def display(self):
         if self.total_cost == 0:
@@ -235,6 +236,58 @@ class SingleOrder:
 
                     case _:
                         print("please respond with y, n, Yes, yes, No or no")
+
+
+if __name__ == '__main__':
+    def display(self):
+        if self.total_cost == 0:
+            print('There are no selections in this order yet.')
+            return
+
+        print(f'Order number {self.order_number}')
+
+        output = f'\t{"Sandwich:":15}'
+        if self.sandwich_cost > 0:
+            output += f'{self.sandwich_type:10}${self.sandwich_cost:5.2f}'
+        else:
+            output += f'{"None":10}'
+        print(output)
+
+        output = f'\t{"Beverage:":15}'
+        if self.beverage_cost > 0:
+            output += f'{self.beverage_size:10}${self.beverage_cost:5.2f}'
+        else:
+            output += f'{"None":10}'
+        print(output)
+
+        output = f'\t{"Fries:":15}'
+        if self.fries_cost > 0:
+            output += f'{self.fries_size:10}${self.fries_cost:5.2f}'
+        else:
+            output += f'{"None":10}'
+        print(output)
+
+        print(f'{"Total:":29}${self.total_cost:5.2f}')
+
+
+    @staticmethod
+    def get_yes_no_answer(question: str) -> bool:
+        while True:
+            answer = input(question)
+            if answer is None or len(answer) == 0:
+                print("please respond with y, n, Yes, yes, No or no")
+            else:
+                answer = answer.lower()[:1]
+                match answer:
+                    case 'y':
+                        return True
+
+                    case 'n':
+                        return False
+
+                    case _:
+                        print("please respond with y, n, Yes, yes, No or no")
+
 
     @staticmethod
     def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:
