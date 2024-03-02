@@ -40,7 +40,33 @@ class SingleOrder:
         SingleOrder.next_order_number += 1
         return SingleOrder.next_order_number
 
-    def display_order(self):
-        print(f'Your Order:')
-        print(f'\tSandwich: {self.sandwich_type:20}${self.sandwich_cost:5.2f}')
+    def display(self):
+        if self.total_cost == 0:
+            print('There are no selections in this order yet.')
+            return
+
+        print(f'Order number {self.order_number}')
+
+        output = f'\t{"Sandwich:":15}'
+        if self.sandwich_cost > 0:
+            output += f'{self.sandwich_type:10}${self.sandwich_cost:5.2f}'
+        else:
+            output += f'{"None":10}'
+        print(output)
+
+        output = f'\t{"Beverage:":15}'
+        if self.beverage_cost > 0:
+            output += f'{self.beverage_size:10}${self.beverage_cost:5.2f}'
+        else:
+            output += f'{"None":10}'
+        print(output)
+
+        output = f'\t{"Fries:":15}'
+        if self.fries_cost > 0:
+            output += f'{self.fries_size:10}${self.fries_cost:5.2f}'
+        else:
+            output += f'{"None":10}'
+        print(output)
+
+        print(f'{"Total:":29}${self.total_cost:5.2f}')
 

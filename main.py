@@ -162,43 +162,12 @@ def get_fries(order: SingleOrder) -> None:
     order.total_cost += selection.price
 
 
-def display_order(order: SingleOrder) -> None:
-    if order is None or order.total_cost == 0:
-        print('There are no selections in this order yet.')
-        return
-
-    print(f'Order number {order.order_number}')
-
-    output = f'\t{"Sandwich:":15}'
-    if order.sandwich_cost > 0:
-        output += f'{order.sandwich_type:10}${order.sandwich_cost:5.2f}'
-    else:
-        output += f'{"None":10}'
-    print(output)
-
-    output = f'\t{"Beverage:":15}'
-    if order.beverage_cost > 0:
-        output += f'{order.beverage_size:10}${order.beverage_cost:5.2f}'
-    else:
-        output += f'{"None":10}'
-    print(output)
-
-    output = f'\t{"Fries:":15}'
-    if order.fries_cost > 0:
-        output += f'{order.fries_size:10}${order.fries_cost:5.2f}'
-    else:
-        output += f'{"None":10}'
-    print(output)
-
-    print(f'{"Total:":29}${order.total_cost:5.2f}')
-
-
 def get_order():
     order = new_order()
     get_sandwich(order)
     get_beverage(order)
     get_fries(order)
-    display_order(order)
+    order.display()
 
 
 def get_python_version() -> str:
