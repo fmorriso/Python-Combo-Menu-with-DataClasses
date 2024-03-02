@@ -76,9 +76,14 @@ def get_sandwich():
 
     order.total_cost += selection.price
 
+
 def get_beverage():
     if not get_yes_no_answer("Would you like a beverage?>"):
         return
+
+    # filter the menu for just beverage choices
+    filtered_items = filter(lambda item: item.category == 'Beverage', menu)
+    available_choices = list(filtered_items)
 
 
 def display_order():
@@ -88,6 +93,7 @@ def display_order():
 def get_order():
     new_order()
     get_sandwich()
+    get_beverage()
     display_order()
 
 
@@ -134,5 +140,3 @@ if __name__ == '__main__':
     build_menu()
     # print(f'{menu=}')
     get_order()
-
-
