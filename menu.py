@@ -33,10 +33,6 @@ class Menu:
             menu_item = MenuItem(category, selection[0], selection[1])
             Menu.choices.append(menu_item)
 
-        category = 'Condiments'
-        menu_item = MenuItem(category, 'Ketchup packets', 0.25, 0)
-        Menu.choices.append(menu_item)
-
     @staticmethod
     def add_menu_item(item: MenuItem) -> None:
         Menu.choices.append(item)

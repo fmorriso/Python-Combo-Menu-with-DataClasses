@@ -12,7 +12,6 @@ from menu import Menu
 
 @dataclass
 class SingleOrder:
-
     menu: ClassVar[Menu] = Menu()
     next_order_number: ClassVar[int] = 100
 
@@ -27,14 +26,14 @@ class SingleOrder:
     fries_size: Optional[str] = 'None'
     fries_cost: Optional[float] = 0.0
 
-    ketchup_packets: Optional[int] = 0
+    ketchup_packets_quantity: Optional[int] = 0
     ketchup_packets_cost: Optional[float] = 0.0
 
     combo_discount_applied: Optional[bool] = False
 
     @property
     def total_cost(self):
-        total: float = self.sandwich_cost + self.beverage_cost + self.fries_cost
+        total: float = self.sandwich_cost + self.beverage_cost + self.fries_cost + self.ketchup_packets_cost
         if self.combo_discount_applied:
             total -= SingleOrder.COMBO_DISCOUNT_AMOUNT * self
         return total
@@ -42,7 +41,6 @@ class SingleOrder:
     def __init__(self):
         """augment the built-in DataClass constructor with some special stuff"""
         self.order_number = SingleOrder.get_next_order_number()
-
 
     @staticmethod
     def get_next_order_number() -> int:
@@ -151,6 +149,17 @@ class SingleOrder:
         self.fries_size = selection.name
         self.fries_cost = selection.price
 
+    def get_ketchup_packets(self):
+        if not SingleOrder.get_yes_no_answer("Would you like any ketchup packets?>"):
+            return
+
+        per_each_cost: float = Menu.KETCHUP_PACKETS_PRICE_EACH
+        n: int = SingleOrder.get_quantity(f"How many ketchup packets would you like at ${per_each_cost:.2f} each", 1,
+                                          10)
+
+        self.ketchup_packets_quantity = n
+        self.ketchup_packets_cost = n * per_each_cost
+
     def get_prompt_for_category(self, leadin: str, available_choices: list[MenuItem]) -> str:
         prompt = leadin
         for available_choice in available_choices:
@@ -159,36 +168,6 @@ class SingleOrder:
         prompt += ") ?>"
         return prompt
 
-    def display(self):
-        if self.total_cost == 0:
-            print('There are no selections in this order yet.')
-            return
-
-        print(f'Order number {self.order_number}')
-
-        output = f'\t{"Sandwich:":15}'
-        if self.sandwich_cost > 0:
-            output += f'{self.sandwich_type:10}${self.sandwich_cost:5.2f}'
-        else:
-            output += f'{"None":10}'
-        print(output)
-
-        output = f'\t{"Beverage:":15}'
-        if self.beverage_cost > 0:
-            output += f'{self.beverage_size:10}${self.beverage_cost:5.2f}'
-        else:
-            output += f'{"None":10}'
-        print(output)
-
-        output = f'\t{"Fries:":15}'
-        if self.fries_cost > 0:
-            output += f'{self.fries_size:10}${self.fries_cost:5.2f}'
-        else:
-            output += f'{"None":10}'
-        print(output)
-
-        print(f'{"Total:":29}${self.total_cost:5.2f}')
-
     @staticmethod
     def get_yes_no_answer(question: str) -> bool:
         while True:
@@ -207,8 +186,6 @@ class SingleOrder:
                     case _:
                         print("please respond with y, n, Yes, yes, No or no")
 
-
-if __name__ == '__main__':
     def display(self):
         if self.total_cost == 0:
             print('There are no selections in this order yet.')
@@ -216,29 +193,35 @@ if __name__ == '__main__':
 
         print(f'Order number {self.order_number}')
 
-        output = f'\t{"Sandwich:":15}'
+        output = f'\t{"Sandwich:":20}'
         if self.sandwich_cost > 0:
             output += f'{self.sandwich_type:10}${self.sandwich_cost:5.2f}'
         else:
             output += f'{"None":10}'
         print(output)
 
-        output = f'\t{"Beverage:":15}'
+        output = f'\t{"Beverage:":20}'
         if self.beverage_cost > 0:
             output += f'{self.beverage_size:10}${self.beverage_cost:5.2f}'
         else:
             output += f'{"None":10}'
         print(output)
 
-        output = f'\t{"Fries:":15}'
+        output = f'\t{"Fries:":20}'
         if self.fries_cost > 0:
             output += f'{self.fries_size:10}${self.fries_cost:5.2f}'
         else:
             output += f'{"None":10}'
         print(output)
 
-        print(f'{"Total:":29}${self.total_cost:5.2f}')
+        output = f'\t{"Ketchup packets: ":20}'
+        if self.ketchup_packets_cost > 0:
+            output += f'{self.ketchup_packets_quantity:<9} ${self.ketchup_packets_cost:5.2f}'
+        else:
+            output += f'{"None":10}'
+        print(output)
 
+        print(f'{"Total:":34}${self.total_cost:5.2f}')
 
     @staticmethod
     def get_yes_no_answer(question: str) -> bool:
@@ -257,7 +240,6 @@ if __name__ == '__main__':
 
                     case _:
                         print("please respond with y, n, Yes, yes, No or no")
-
 
     @staticmethod
     def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:

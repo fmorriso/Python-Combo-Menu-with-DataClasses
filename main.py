@@ -8,6 +8,7 @@ def get_order() -> SingleOrder:
     order.get_sandwich()
     order.get_beverage()
     order.get_fries()
+    order.get_ketchup_packets()
     order.display()
     return order
 
