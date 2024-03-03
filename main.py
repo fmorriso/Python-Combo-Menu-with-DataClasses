@@ -21,4 +21,4 @@ if __name__ == '__main__':
 
     # TODO: surround get_order() with a loop that allows multiple orders to be taken and remembered.
     # one possibility is a Customer class with a list of orders of type SingleOrder
-    current_order = get_order()
+    current_order: SingleOrder = get_order()
