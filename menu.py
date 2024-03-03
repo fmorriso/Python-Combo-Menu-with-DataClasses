@@ -4,14 +4,13 @@ from typing import ClassVar, Optional
 from menu_item import MenuItem
 
 
-
 @dataclass
 class Menu:
     choices: ClassVar[list[MenuItem]] = []
 
     KETCHUP_PACKETS_PRICE_EACH: ClassVar[float] = 0.25
     COMBO_DISCOUNT_AMOUNT: ClassVar[float] = 1.0
-    
+
     def __init__(self) -> None:
         if Menu.choices is None or len(Menu.choices) == 0:
             Menu.build()
@@ -47,4 +46,3 @@ class Menu:
         # filter the menu for just the specified category choices
         available_choices: list[MenuItem] = [item for item in Menu.choices if item.category == category]
         return available_choices
-        
