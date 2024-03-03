@@ -4,7 +4,7 @@ from typing import ClassVar, Optional
 from menu_item import MenuItem
 
 
-# NOTE: we make every attribute optional so we can perform the
+# NOTE: we make almost every attribute optional so we can perform the
 #       python equivalent of java's default constructor:
 #       order = SingleOrder()
 #       which has the added benefit of not having the world's largest constructor signature.
@@ -14,11 +14,9 @@ class SingleOrder:
     KETCHUP_PACKETS_PRICE_EACH: ClassVar[float] = 0.25
     COMBO_DISCOUNT_AMOUNT: ClassVar[float] = 1.0
     menu: ClassVar[list[MenuItem]] = []
-
     next_order_number: ClassVar[int] = 100
 
     order_number: Optional[int] = 0
-    total_cost: Optional[float] = 0.0
 
     sandwich_type: Optional[str] = 'None'
     sandwich_cost: Optional[float] = 0.0
@@ -32,7 +30,14 @@ class SingleOrder:
     ketchup_packets: Optional[int] = 0
     ketchup_packets_cost: Optional[float] = 0.0
 
-    combbo_discount_applied: Optional[bool] = False
+    combo_discount_applied: Optional[bool] = False
+
+    @property
+    def total_cost(self):
+        total: float = self.sandwich_cost + self.beverage_cost + self.fries_cost
+        if self.combo_discount_applied:
+            total -= SingleOrder.COMBO_DISCOUNT_AMOUNT * self
+        return total
 
     def __init__(self):
         """augment the built-in DataClass constructor with some special stuff"""
@@ -98,8 +103,6 @@ class SingleOrder:
         self.sandwich_type = selection.name
         self.sandwich_cost = selection.price
 
-        self.total_cost += selection.price
-
     def get_beverage(self) -> None:
         if not SingleOrder.get_yes_no_answer("Would you like a beverage?>"):
             return
@@ -130,8 +133,6 @@ class SingleOrder:
 
         self.beverage_size = selection.name
         self.beverage_cost = selection.price
-
-        self.total_cost += selection.price
 
     def get_fries(self) -> None:
         if not SingleOrder.get_yes_no_answer("Would you like fries?>"):
@@ -172,8 +173,6 @@ class SingleOrder:
 
         self.fries_size = selection.name
         self.fries_cost = selection.price
-
-        self.total_cost += selection.price
 
     def get_menu_choices_for_category(self, category: str) -> list[MenuItem]:
         # filter the menu for just the specified category choices
