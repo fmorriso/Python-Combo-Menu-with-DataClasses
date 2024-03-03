@@ -3,6 +3,12 @@
 * Python version(s)
   * 3.10.11 (FiewalledReplit)
   * 3.12.2 (locally installed on my laptop)
+* Motivations
+  * Use python data classes to separate out the following:
+    * Menu Items - each item on the menu has a category, a name and a price.
+    * Menu - consists of Menu Items and the ability to deliver a list of menu items for a given category
+    * SingleOrder - a single customer order that knows how to ask questions about ordering 
+      a menu item for a given category.
 ## References
 * [Project 3.1.3](https://pltw.read.inkling.com/a/b/71ce293152cf4873b7395f3d59c64a57/p/667ce0d0f6bf463a8c2a3bcb4c2aa687)
 ## Requirements
