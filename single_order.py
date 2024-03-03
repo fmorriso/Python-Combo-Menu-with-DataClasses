@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import ClassVar, Optional
 
 from menu_item import MenuItem
+from menu import Menu
 
 
 # NOTE: we make almost every attribute optional so we can perform the
@@ -11,9 +12,8 @@ from menu_item import MenuItem
 
 @dataclass
 class SingleOrder:
-    KETCHUP_PACKETS_PRICE_EACH: ClassVar[float] = 0.25
-    COMBO_DISCOUNT_AMOUNT: ClassVar[float] = 1.0
-    menu: ClassVar[list[MenuItem]] = []
+
+    menu: ClassVar[Menu] = Menu()
     next_order_number: ClassVar[int] = 100
 
     order_number: Optional[int] = 0
@@ -42,30 +42,7 @@ class SingleOrder:
     def __init__(self):
         """augment the built-in DataClass constructor with some special stuff"""
         self.order_number = SingleOrder.get_next_order_number()
-        if len(SingleOrder.menu) == 0:
-            SingleOrder.build_menu()
 
-    @staticmethod
-    def build_menu():
-        """build menu that is the same for all orders"""
-        category = 'Sandwich'
-        for selection in (['Chicken', 5.25], ['Beef', 6.25], ['Tofu', 5.75]):
-            menu_item = MenuItem(category, selection[0], selection[1])
-            SingleOrder.menu.append(menu_item)
-
-        category = 'Beverage'
-        for selection in (['Small', 1.0], ['Medium', 1.5], ['Large', 2.0]):
-            menu_item = MenuItem(category, selection[0], selection[1])
-            SingleOrder.menu.append(menu_item)
-
-        category = 'Fries'
-        for selection in (['Small', 1.0], ['Medium', 1.5], ['Large', 2.0]):
-            menu_item = MenuItem(category, selection[0], selection[1])
-            SingleOrder.menu.append(menu_item)
-
-        category = 'Condiments'
-        menu_item = MenuItem(category, 'Ketchup packets', 0.25, 0)
-        SingleOrder.menu.append(menu_item)
 
     @staticmethod
     def get_next_order_number() -> int:
@@ -77,7 +54,7 @@ class SingleOrder:
             return
 
         # filter the menu for just sandwich choices
-        available_choices: list[MenuItem] = self.get_menu_choices_for_category('Sandwich')
+        available_choices: list[MenuItem] = Menu.get_menu_choices_for_category(category='Sandwich')
 
         # create prompt with choices and prices
         prompt = self.get_prompt_for_category("Which sandwich would you like to order: (", available_choices)
@@ -108,7 +85,7 @@ class SingleOrder:
             return
 
         # filter the menu for just beverage choices
-        available_choices: list[MenuItem] = self.get_menu_choices_for_category('Beverage')
+        available_choices: list[MenuItem] = Menu.get_menu_choices_for_category('Beverage')
 
         # create prompt with choices and prices
         prompt = self.get_prompt_for_category("What size beverage would you like to order: (", available_choices)
@@ -139,7 +116,7 @@ class SingleOrder:
             return
 
         # filter the menu for just french fries choices
-        available_choices = self.get_menu_choices_for_category('Fries')
+        available_choices = Menu.get_menu_choices_for_category('Fries')
 
         # create the prompt with choices and prices
         prompt = self.get_prompt_for_category("What size french fries would you like to order: (", available_choices)
@@ -173,12 +150,6 @@ class SingleOrder:
 
         self.fries_size = selection.name
         self.fries_cost = selection.price
-
-    def get_menu_choices_for_category(self, category: str) -> list[MenuItem]:
-        # filter the menu for just the specified category choices
-        filtered_items = filter(lambda item: item.category == category, SingleOrder.menu)
-        available_choices = list(filtered_items)
-        return available_choices
 
     def get_prompt_for_category(self, leadin: str, available_choices: list[MenuItem]) -> str:
         prompt = leadin
