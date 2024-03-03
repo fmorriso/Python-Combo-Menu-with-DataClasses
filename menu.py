@@ -9,7 +9,7 @@ class Menu:
     choices: ClassVar[list[MenuItem]] = []
 
     KETCHUP_PACKETS_PRICE_EACH: ClassVar[float] = 0.25
-    COMBO_DISCOUNT_AMOUNT: ClassVar[float] = 1.0
+    COMBO_DISCOUNT_AMOUNT: ClassVar[float] = -1.0
 
     def __init__(self) -> None:
         if Menu.choices is None or len(Menu.choices) == 0:

@@ -9,7 +9,9 @@ def get_order() -> SingleOrder:
     order.get_beverage()
     order.get_fries()
     order.get_ketchup_packets()
+    order.check_for_discount()
     order.display()
+
     return order
 
 

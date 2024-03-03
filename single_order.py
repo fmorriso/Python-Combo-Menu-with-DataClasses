@@ -35,7 +35,7 @@ class SingleOrder:
     def total_cost(self):
         total: float = self.sandwich_cost + self.beverage_cost + self.fries_cost + self.ketchup_packets_cost
         if self.combo_discount_applied:
-            total -= SingleOrder.COMBO_DISCOUNT_AMOUNT * self
+            total += Menu.COMBO_DISCOUNT_AMOUNT # this is declared as a negative amount so we can display it easier
         return total
 
     def __init__(self):
@@ -160,6 +160,14 @@ class SingleOrder:
         self.ketchup_packets_quantity = n
         self.ketchup_packets_cost = n * per_each_cost
 
+    def check_for_discount(self):
+        # don't give the discount more than once
+        if self.combo_discount_applied:
+            return
+        if self.sandwich_cost > 0 and self.beverage_cost > 0 and self.fries_cost > 0:
+            self.combo_discount_applied = True
+
+
     def get_prompt_for_category(self, leadin: str, available_choices: list[MenuItem]) -> str:
         prompt = leadin
         for available_choice in available_choices:
@@ -220,6 +228,10 @@ class SingleOrder:
         else:
             output += f'{"None":10}'
         print(output)
+
+        if self.combo_discount_applied:
+            output = f'\t{"Combo discount":30}${Menu.COMBO_DISCOUNT_AMOUNT:5.2f}'
+            print(output)
 
         print(f'{"Total:":34}${self.total_cost:5.2f}')
 
