@@ -1,5 +1,6 @@
 import sys
 
+from restaurant import Restaurant
 from single_order import SingleOrder
 
 
@@ -22,6 +23,15 @@ def get_python_version() -> str:
 if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
 
-    # TODO: surround get_order() with a loop that allows multiple orders to be taken and remembered.
-    # one possibility is a Customer class with a list of orders of type SingleOrder
-    current_order: SingleOrder = get_order()
+    restaurant = Restaurant("Fred's Fast Food")
+    while True:
+        current_order: SingleOrder = get_order()
+        restaurant.add_order(current_order)
+        if not SingleOrder.get_yes_no_answer('Do you want to make another order?>'):
+            break
+
+    if SingleOrder.get_yes_no_answer('Do you want to review your orders?>'):
+        for order in restaurant.get_orders():
+            order.display()
+
+    print(f'Thanks for visiting {restaurant.name}.  We appreciate your business.')

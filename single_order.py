@@ -35,7 +35,7 @@ class SingleOrder:
     def total_cost(self):
         total: float = self.sandwich_cost + self.beverage_cost + self.fries_cost + self.ketchup_packets_cost
         if self.combo_discount_applied:
-            total += Menu.COMBO_DISCOUNT_AMOUNT # this is declared as a negative amount so we can display it easier
+            total += Menu.COMBO_DISCOUNT_AMOUNT  # this is declared as a negative amount so we can display it easier
         return total
 
     def __init__(self):
@@ -167,7 +167,6 @@ class SingleOrder:
         if self.sandwich_cost > 0 and self.beverage_cost > 0 and self.fries_cost > 0:
             self.combo_discount_applied = True
 
-
     def get_prompt_for_category(self, leadin: str, available_choices: list[MenuItem]) -> str:
         prompt = leadin
         for available_choice in available_choices:
@@ -234,24 +233,6 @@ class SingleOrder:
             print(output)
 
         print(f'{"Total:":34}${self.total_cost:5.2f}')
-
-    @staticmethod
-    def get_yes_no_answer(question: str) -> bool:
-        while True:
-            answer = input(question)
-            if answer is None or len(answer) == 0:
-                print("please respond with y, n, Yes, yes, No or no")
-            else:
-                answer = answer.lower()[:1]
-                match answer:
-                    case 'y':
-                        return True
-
-                    case 'n':
-                        return False
-
-                    case _:
-                        print("please respond with y, n, Yes, yes, No or no")
 
     @staticmethod
     def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:

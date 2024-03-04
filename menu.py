@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import ClassVar, Optional
+from typing import ClassVar
 
 from menu_item import MenuItem
 
