@@ -24,6 +24,7 @@ if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
 
     restaurant = Restaurant("Fred's Fast Food")
+    print(f'Welcome to {restaurant.name} where the food is always delicious.')
     while True:
         current_order: SingleOrder = get_order()
         restaurant.add_order(current_order)
