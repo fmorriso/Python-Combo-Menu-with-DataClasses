@@ -4,6 +4,7 @@ from typing import ClassVar, Optional
 from menu_item import MenuItem
 from menu import Menu
 from prompt_utility import PromptUtility
+from datetime import datetime
 
 
 # NOTE: we make almost every attribute optional so we can perform the
@@ -17,6 +18,7 @@ class SingleOrder:
     next_order_number: ClassVar[int] = 100
 
     order_number: Optional[int] = 0
+    order_date_time: Optional[datetime] = datetime.now()
 
     sandwich_type: Optional[str] = 'None'
     sandwich_cost: Optional[float] = 0.0
@@ -181,8 +183,8 @@ class SingleOrder:
         if self.total_cost == 0:
             print('There are no selections in this order yet.')
             return
-
-        print(f'Order number {self.order_number}')
+# f"Date: {date:%m/%d/%Y}"
+        print(f'Order number {self.order_number} placed on {self.order_date_time.date():%Y-%m-%d} at {self.order_date_time.time():%H:%M:%S}')
 
         output = f'\t{"Sandwich:":20}'
         if self.sandwich_cost > 0:
