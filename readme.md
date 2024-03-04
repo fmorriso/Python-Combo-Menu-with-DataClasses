@@ -3,6 +3,7 @@
 * Python version(s)
   * 3.10.11 (FiewalledReplit)
   * 3.12.2 (locally installed on my laptop)
+  * Trying to sync between GitHub and GitLab
 * Motivations
   * Use python data classes to separate out the following:
     * Menu Items - each item on the menu has a category, a name and a price.
