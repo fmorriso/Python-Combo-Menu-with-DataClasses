@@ -18,7 +18,7 @@ class SingleOrder:
     next_order_number: ClassVar[int] = 100
 
     order_number: Optional[int] = 0
-    order_date_time: Optional[datetime] = datetime.now()
+    order_date_time: Optional[datetime] = None
 
     sandwich_type: Optional[str] = 'None'
     sandwich_cost: Optional[float] = 0.0
@@ -44,6 +44,7 @@ class SingleOrder:
     def __init__(self):
         """augment the built-in DataClass constructor with some special stuff"""
         self.order_number = SingleOrder.get_next_order_number()
+        self.order_date_time = datetime.now()
 
     @staticmethod
     def get_next_order_number() -> int:
@@ -158,7 +159,7 @@ class SingleOrder:
 
         per_each_cost: float = Menu.KETCHUP_PACKETS_PRICE_EACH
         n: int = PromptUtility.get_quantity(f"How many ketchup packets would you like at ${per_each_cost:.2f} each", 1,
-                                          10)
+                                            10)
 
         self.ketchup_packets_quantity = n
         self.ketchup_packets_cost = n * per_each_cost
@@ -178,13 +179,13 @@ class SingleOrder:
         prompt += ") ?>"
         return prompt
 
-
     def display(self):
         if self.total_cost == 0:
             print('There are no selections in this order yet.')
             return
-# f"Date: {date:%m/%d/%Y}"
-        print(f'Order number {self.order_number} placed on {self.order_date_time.date():%Y-%m-%d} at {self.order_date_time.time():%H:%M:%S}')
+        # f"Date: {date:%m/%d/%Y}"
+        print(
+            f'Order number {self.order_number} placed on {self.order_date_time.date():%Y-%m-%d} at {self.order_date_time.time():%H:%M:%S}')
 
         output = f'\t{"Sandwich:":20}'
         if self.sandwich_cost > 0:
@@ -219,4 +220,3 @@ class SingleOrder:
             print(output)
 
         print(f'{"Total:":34}${self.total_cost:5.2f}')
-
