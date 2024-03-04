@@ -3,6 +3,7 @@ from typing import ClassVar, Optional
 
 from menu_item import MenuItem
 from menu import Menu
+from prompt_utility import PromptUtility
 
 
 # NOTE: we make almost every attribute optional so we can perform the
@@ -48,7 +49,7 @@ class SingleOrder:
         return SingleOrder.next_order_number
 
     def get_sandwich(self) -> None:
-        if not SingleOrder.get_yes_no_answer("Would you like a sandwich?>"):
+        if not PromptUtility.get_yes_no_answer("Would you like a sandwich?>"):
             return
 
         # filter the menu for just sandwich choices
@@ -79,7 +80,7 @@ class SingleOrder:
         self.sandwich_cost = selection.price
 
     def get_beverage(self) -> None:
-        if not SingleOrder.get_yes_no_answer("Would you like a beverage?>"):
+        if not PromptUtility.get_yes_no_answer("Would you like a beverage?>"):
             return
 
         # filter the menu for just beverage choices
@@ -110,7 +111,7 @@ class SingleOrder:
         self.beverage_cost = selection.price
 
     def get_fries(self) -> None:
-        if not SingleOrder.get_yes_no_answer("Would you like fries?>"):
+        if not PromptUtility.get_yes_no_answer("Would you like fries?>"):
             return
 
         # filter the menu for just french fries choices
@@ -140,7 +141,7 @@ class SingleOrder:
 
         # Ask customer of they want to super-size their fries from Small to Large
         if selection.name[:1].lower() == 's':
-            if SingleOrder.get_yes_no_answer('Do you want to super-size to a large?>'):
+            if PromptUtility.get_yes_no_answer('Do you want to super-size to a large?>'):
                 abbrev = 'l'
                 for available_choice in available_choices:
                     if available_choice.name[:1].lower() == abbrev:
@@ -150,11 +151,11 @@ class SingleOrder:
         self.fries_cost = selection.price
 
     def get_ketchup_packets(self):
-        if not SingleOrder.get_yes_no_answer("Would you like any ketchup packets?>"):
+        if not PromptUtility.get_yes_no_answer("Would you like any ketchup packets?>"):
             return
 
         per_each_cost: float = Menu.KETCHUP_PACKETS_PRICE_EACH
-        n: int = SingleOrder.get_quantity(f"How many ketchup packets would you like at ${per_each_cost:.2f} each", 1,
+        n: int = PromptUtility.get_quantity(f"How many ketchup packets would you like at ${per_each_cost:.2f} each", 1,
                                           10)
 
         self.ketchup_packets_quantity = n
@@ -175,23 +176,6 @@ class SingleOrder:
         prompt += ") ?>"
         return prompt
 
-    @staticmethod
-    def get_yes_no_answer(question: str) -> bool:
-        while True:
-            answer = input(question)
-            if answer is None or len(answer) == 0:
-                print("please respond with y, n, Yes, yes, No or no")
-            else:
-                answer = answer.lower()[:1]
-                match answer:
-                    case 'y':
-                        return True
-
-                    case 'n':
-                        return False
-
-                    case _:
-                        print("please respond with y, n, Yes, yes, No or no")
 
     def display(self):
         if self.total_cost == 0:
@@ -234,17 +218,3 @@ class SingleOrder:
 
         print(f'{"Total:":34}${self.total_cost:5.2f}')
 
-    @staticmethod
-    def get_quantity(question: str, min_value: int = 0, max_value: int = 10) -> int:
-        """Prompt for a number between min_value and max_value"""
-        question = f'{question} (between {min_value} and {max_value})?>'
-        count: int = min_value - 1
-        while count < min_value or count > max_value:
-            try:
-                count = int(input(question))
-                if count < min_value or count > max_value:
-                    print(f'Please enter a number between {min_value} and {max_value}.')
-                else:
-                    return count
-            except ValueError:
-                print(f'Please enter a value between {min_value} and {max_value}')
