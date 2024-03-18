@@ -35,7 +35,7 @@ class SingleOrder:
     combo_discount_applied: Optional[bool] = False
 
     @property
-    def total_cost(self):
+    def total_cost(self) -> float:
         total: float = self.sandwich_cost + self.beverage_cost + self.fries_cost + self.ketchup_packets_cost
         if self.combo_discount_applied:
             total += Menu.COMBO_DISCOUNT_AMOUNT  # this is declared as a negative amount so we can display it easier
