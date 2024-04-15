@@ -17,6 +17,7 @@ def get_order() -> SingleOrder:
     return order
 
 
+@staticmethod
 def get_python_version() -> str:
     """returns the current version of python that is running the current program"""
     return f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}'
