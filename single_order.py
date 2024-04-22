@@ -11,7 +11,6 @@ from datetime import datetime
 #       python equivalent of java's default constructor:
 #       order = SingleOrder()
 #       which has the added benefit of not having the world's largest constructor signature.
-
 @dataclass
 class SingleOrder:
     menu: ClassVar[Menu] = Menu()
