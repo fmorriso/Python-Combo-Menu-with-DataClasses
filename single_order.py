@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, Optional
 
+from input_utilities import InputUtils
 from menu_item import MenuItem
 from menu import Menu
 from prompt_utility import PromptUtility
@@ -157,8 +158,10 @@ class SingleOrder:
             return
 
         per_each_cost: float = Menu.KETCHUP_PACKETS_PRICE_EACH
-        n: int = PromptUtility.get_quantity(f"How many ketchup packets would you like at ${per_each_cost:.2f} each", 1,
-                                            10)
+        msg: str = f"How many ketchup packets would you like at ${per_each_cost:.2f} each"
+        title: str = "Ketchup Packets"
+        n: int = InputUtils.get_whole_number_in_range(title, msg, 1, 10)
+        #PromptUtility.get_quantity(f"How many ketchup packets would you like at ${per_each_cost:.2f} each", 1, 10)
 
         self.ketchup_packets_quantity = n
         self.ketchup_packets_cost = n * per_each_cost
