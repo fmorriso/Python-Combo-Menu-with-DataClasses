@@ -86,19 +86,18 @@ class SingleOrder:
         if not PromptUtility.get_yes_no_answer("Would you like a beverage?>"):
             return
 
-        category: str = 'Beverage'
         # filter the menu for just beverage choices
-        choices: list[str] = Menu.get_menu_choices_list_for_category(category)
+        category: str = 'Beverage'
+        category_items: list[MenuItem] = Menu.get_menu_choices_for_category(category)
+        choices: list[str] = Menu.get_menu_choices_list_from_items(category_items)
 
         title: str = 'Beverage selection'
         question: str = 'What size beverage?'
         choice = InputUtils.get_single_choice(title, question, choices)
-        print(f'{choice} is a great choice')
 
-        # idx: int = choice.index(choices)
         idx: int = choices.index(choice)
-        available_choices: list[MenuItem] = Menu.get_menu_choices_for_category(category)
-        selection = available_choices[idx]
+        selection = category_items[idx]
+        print(f'{selection.name} is a great choice')
         self.beverage_size = selection.name
         self.beverage_cost = selection.price
 

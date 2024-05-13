@@ -44,9 +44,8 @@ class Menu:
         return available_choices
 
     @staticmethod
-    def get_menu_choices_list_for_category(category: str) -> list[str]:
-        '''return a list of strings representing all items and their prices for the specified category'''
-        available_choices: list[MenuItem] = [item for item in Menu.choices if item.category == category]
+    def get_menu_choices_list_from_items(available_choices: list[MenuItem]) -> list[str]:
+        '''return a list of strings representing all items and their prices'''
         lst = []
         for available_choice in available_choices:
             lst.append(f'{available_choice.name}: ${available_choice.price:.2f}')

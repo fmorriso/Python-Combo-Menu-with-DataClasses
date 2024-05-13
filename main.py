@@ -7,15 +7,15 @@ from single_order import SingleOrder
 
 
 def get_order() -> SingleOrder:
-    order = SingleOrder()
-    order.get_sandwich()
-    order.get_beverage()
-    order.get_fries()
-    order.get_ketchup_packets()
-    order.check_for_discount()
-    order.display()
+    new_order = SingleOrder()
+    new_order.get_sandwich()
+    new_order.get_beverage()
+    new_order.get_fries()
+    new_order.get_ketchup_packets()
+    new_order.check_for_discount()
+    new_order.display()
 
-    return order
+    return new_order
 
 
 @staticmethod
