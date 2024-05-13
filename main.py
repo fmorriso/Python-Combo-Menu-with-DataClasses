@@ -8,6 +8,7 @@ from single_order import SingleOrder
 
 def get_order() -> SingleOrder:
     new_order = SingleOrder()
+
     new_order.get_sandwich()
     new_order.get_beverage()
     new_order.get_fries()
