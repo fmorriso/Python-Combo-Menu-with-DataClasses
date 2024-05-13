@@ -21,7 +21,7 @@ class SingleOrder:
     order_date_time: Optional[datetime] = None
 
     sandwich_type: Optional[str] = 'None'
-    sandwich_cost: Optional[float] = 0.0
+    sandwich_cost: Optional[float | None] = 0.0
 
     beverage_size: Optional[str] = 'None'
     beverage_cost: Optional[float] = 0.0
@@ -86,35 +86,27 @@ class SingleOrder:
         if not PromptUtility.get_yes_no_answer("Would you like a beverage?>"):
             return
 
+        category: str = 'Beverage'
         # filter the menu for just beverage choices
-        available_choices: list[MenuItem] = Menu.get_menu_choices_for_category('Beverage')
+        choices: list[str] = Menu.get_menu_choices_list_for_category(category)
 
-        # create prompt with choices and prices
-        prompt = self.get_prompt_for_category("What size beverage would you like to order: (", available_choices)
+        title: str = 'Beverage selection'
+        question: str = 'What size beverage?'
+        choice = InputUtils.get_single_choice(title, question, choices)
+        print(f'{choice} is a great choice')
 
-        while True:
-            choice = input(prompt)
-            if choice is None or len(choice) == 0:
-                choice = "unknown"
-            abbrev = choice[:1].lower()
-
-            selection = None
-            for available_choice in available_choices:
-                if available_choice.name[:1].lower() == abbrev:
-                    selection = available_choice
-                    break
-
-            if selection is None:
-                print(f'{abbrev} is not a valid choice')
-            else:
-                print(f'{selection.name} is a great choice')
-                break
-
+        # idx: int = choice.index(choices)
+        idx: int = choices.index(choice)
+        available_choices: list[MenuItem] = Menu.get_menu_choices_for_category(category)
+        selection = available_choices[idx]
         self.beverage_size = selection.name
         self.beverage_cost = selection.price
 
     def get_fries(self) -> None:
-        if not PromptUtility.get_yes_no_answer("Would you like fries?>"):
+        title: str = 'French Fries?'
+        question: str = 'Would you like fries?'
+        if not InputUtils.get_yesno_response(question, title):
+            #if not PromptUtility.get_yes_no_answer("Would you like fries?>"):
             return
 
         # filter the menu for just french fries choices
@@ -161,7 +153,6 @@ class SingleOrder:
         msg: str = f"How many ketchup packets would you like at ${per_each_cost:.2f} each"
         title: str = "Ketchup Packets"
         n: int = InputUtils.get_whole_number_in_range(title, msg, 1, 10)
-        #PromptUtility.get_quantity(f"How many ketchup packets would you like at ${per_each_cost:.2f} each", 1, 10)
 
         self.ketchup_packets_quantity = n
         self.ketchup_packets_cost = n * per_each_cost
@@ -170,7 +161,12 @@ class SingleOrder:
         # don't give the discount more than once
         if self.combo_discount_applied:
             return
-        if self.sandwich_cost > 0 and self.beverage_cost > 0 and self.fries_cost > 0:
+
+        sandwich_cost: float = 0 if self.sandwich_cost is None else self.sandwich_cost
+        beverage_cost: float = 0 if self.beverage_cost is None else self.beverage_cost
+        fries_cost: float = 0 if self.fries_cost is None else self.fries_cost
+
+        if sandwich_cost > 0 and beverage_cost > 0 and fries_cost > 0:
             self.combo_discount_applied = True
 
     def get_prompt_for_category(self, leadin: str, available_choices: list[MenuItem]) -> str:
@@ -185,7 +181,7 @@ class SingleOrder:
         if self.total_cost == 0:
             print('There are no selections in this order yet.')
             return
-        # f"Date: {date:%m/%d/%Y}"
+
         print(
             f'Order number {self.order_number} placed on {self.order_date_time.date():%Y-%m-%d} at {self.order_date_time.time():%H:%M:%S}')
 
@@ -211,7 +207,7 @@ class SingleOrder:
         print(output)
 
         output = f'\t{"Ketchup packets: ":20}'
-        if self.ketchup_packets_cost > 0:
+        if self.ketchup_packets_cost is not None:
             output += f'{self.ketchup_packets_quantity:<9} ${self.ketchup_packets_cost:5.2f}'
         else:
             output += f'{"None":10}'

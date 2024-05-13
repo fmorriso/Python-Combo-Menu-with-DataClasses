@@ -1,5 +1,6 @@
 import sys
 
+from input_utilities import InputUtils
 from prompt_utility import PromptUtility
 from restaurant import Restaurant
 from single_order import SingleOrder
@@ -31,10 +32,14 @@ if __name__ == '__main__':
     while True:
         current_order: SingleOrder = get_order()
         restaurant.add_order(current_order)
-        if not PromptUtility.get_yes_no_answer('Do you want to make another order?>'):
+        title: str = 'Another order?'
+        question: str = 'Do you want to make another order?'
+        if not InputUtils.get_yesno_response(question, title):
             break
 
-    if PromptUtility.get_yes_no_answer('Do you want to review your orders?>'):
+    title = 'Review orders?'
+    question = 'Do you want to review your orders?'
+    if InputUtils.get_yesno_response(question, title):
         for order in restaurant.get_orders():
             order.display()
 
