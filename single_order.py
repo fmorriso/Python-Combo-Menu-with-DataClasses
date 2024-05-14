@@ -59,7 +59,7 @@ class SingleOrder:
     def get_sandwich(self) -> None:
         title: str = 'Sandwich choice'
         question: str = 'Would you like a sandwich?'
-        if not InputUtils.get_yesno_response(question, title):        
+        if not InputUtils.get_yesno_response(question, title):
             return
 
         # filter the menu for just sandwich choices
