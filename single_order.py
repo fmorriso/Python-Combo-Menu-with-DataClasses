@@ -57,7 +57,9 @@ class SingleOrder:
         return SingleOrder.next_order_number
 
     def get_sandwich(self) -> None:
-        if not PromptUtility.get_yes_no_answer("Would you like a sandwich?>"):
+        title: str = 'Sandwich choice'
+        question: str = 'Would you like a sandwich?'
+        if not InputUtils.get_yesno_response(question, title):        
             return
 
         # filter the menu for just sandwich choices
