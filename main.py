@@ -1,7 +1,7 @@
 import sys
+from importlib.metadata import version
 
 from input_utilities import InputUtils
-from prompt_utility import PromptUtility
 from restaurant import Restaurant
 from single_order import SingleOrder
 
@@ -20,14 +20,19 @@ def get_order() -> SingleOrder:
     return new_order
 
 
-@staticmethod
 def get_python_version() -> str:
     """returns the current version of python that is running the current program"""
     return f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}'
 
 
+def get_package_version(package_name: str) -> str:
+    return version(package_name)
+
+
 if __name__ == '__main__':
     print(f'Combo Menu using Data Classes using python version {get_python_version()}')
+    print(f'Pyqt6 version: {get_package_version("pyqt6")}')
+#    print(f'dataclasses version: {get_package_version("dataclasses")}')
 
     restaurant = Restaurant("Fred's Fast Food")
     print(f'Welcome to {restaurant.name} where the food and drinks are always delicious.')

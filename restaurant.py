@@ -1,10 +1,10 @@
-from dataclasses import dataclass
+import dataclasses
 from typing import ClassVar, Optional
 
 from single_order import SingleOrder
 
 
-@dataclass
+@dataclasses.dataclass
 class Restaurant:
     name: str
     orders: Optional[list[SingleOrder]] = None

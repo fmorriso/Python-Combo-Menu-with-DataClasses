@@ -1,8 +1,34 @@
 # PLTW Project 3.1.1 Combo Menu - using Data Classes
+
+A simplistic fast food ordering system for ordering:
+1. a sandwich
+1. a beverage
+1. french fries with a super-size option if initial choice is small
+1. ketchup packets
+
+## Tools Used
+
+| Tool    |  Version |
+|:--------|---------:|
+| Python  |   3.13.3 |
+| PyQt6   |    6.9.0 |
+| PyCharm | 2025.1.0 |
+| VSCode  |   1.99.0 |
+
+## Change History
+
+| Date       | Description      |
+|:-----------|:-----------------|
+| 2025-04-22 | Initial creation |
+
+## References
+
+* []()
+
 ## Developer Notes
 * Python version(s)
-  * 3.10.11 (FiewalledReplit)
-  * 3.12.2 (locally installed on my laptop)
+  * 3.11.11 (FirewalledReplit)
+  * 3.13.3 (locally installed on my laptop)
   * Trying to sync between GitHub and GitLab
 * Motivations
   * Use python data classes to separate out the following:
